@@ -114,7 +114,16 @@ class Databasecovid {
 
   Future<List<ModelCabecalho>> retornarPrincipal(String data) async {
     Database? dbPadrao = await db;
-    List listMap = await dbPadrao!.rawQuery(''' SELECT 
+    List listMap = await dbPadrao!.rawQuery(''' 
+                      SELECT
+                        $state,
+                        $confirmed,
+                        $deaths,
+                        casos,
+                        mortes,
+                        (CAST(confirmed AS DOUBLE) / CAST(casos AS DOUBLE)) * 2 perc_casos,
+                        (CAST(deaths AS DOUBLE) / CAST(mortes AS DOUBLE)) * 2 perc_mortes
+                      FROM(SELECT 
                       $state, 
                       SUM($confirmed) confirmed, 
                       SUM($deaths) deaths,
@@ -123,7 +132,7 @@ class Databasecovid {
                       FROM $tabelaCovid 
                       WHERE $date = '$data' 
                       GROUP BY 
-                        $state 
+                        $state) 
                   ''');
 
     List<ModelCabecalho> listaCovid = [];

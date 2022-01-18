@@ -74,6 +74,8 @@ class ModelCabecalho {
   int? deaths;
   String? casos;
   String? mortes;
+  String? perc_casos;
+  String? perc_mortes;
   String? state;
 
   ModelCabecalho();
@@ -81,8 +83,11 @@ class ModelCabecalho {
   ModelCabecalho.fromJson(Map map) {
     confirmed = map['confirmed'];
     deaths = map['deaths'];
+    deaths = map['deaths'];
     casos = map['casos'].toString();
     mortes = map['mortes'].toString();
+    perc_casos = map['perc_casos'].toString();
+    perc_mortes = map['perc_mortes'].toString();
     state = map['state'];
   }
 

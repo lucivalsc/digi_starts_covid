@@ -163,19 +163,18 @@ class _PrincipalState extends State<Principal> {
                       children: dadoscovid
                           .map(
                             (e) => ListTile(
-                              title: Text(e.state!),
+                              title: Text(
+                                e.state!,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               subtitle: Column(
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                          'Casos: ${formatter.format(e.confirmed!).replaceAll('R\$', '')}'),
-                                      Text(
-                                          'Mortes: ${formatter.format(e.deaths!).replaceAll('R\$', '')}'),
-                                    ],
-                                  ),
+                                  _dados(
+                                      'Casos: ${formatter.format(e.confirmed!).replaceAll('R\$', '')}',
+                                      'Mortes: ${formatter.format(e.deaths!).replaceAll('R\$', '')}'),
+                                  _Grafico(e.perc_casos, e.perc_mortes),
                                 ],
                               ),
                               onTap: () {},
@@ -193,6 +192,58 @@ class _PrincipalState extends State<Principal> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  _dados(String Valor1, String Valor2) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: (MediaQuery.of(context).size.width - 40) / 2,
+          child: Text('${Valor1}'),
+        ),
+        Expanded(
+          child: Text('${Valor2}'),
+        ),
+      ],
+    );
+  }
+
+  _Grafico(String? Tamanho1, String? Tamanho2) {
+    double tamanho = ((MediaQuery.of(context).size.width - 40) / 2);
+
+    double? valor1 =
+        double.parse((tamanho * double.parse(Tamanho1!)).toStringAsFixed(0));
+
+    double? valor2 =
+        double.parse((tamanho * double.parse(Tamanho2!)).toStringAsFixed(0));
+
+    return Container(
+      margin: EdgeInsets.only(top: 5),
+      child: Row(
+        children: [
+          AnimatedContainer(
+            width: valor1,
+            height: 20,
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Cores.corPadrao,
+            ),
+          ),
+          Container(width: tamanho - valor1),
+          AnimatedContainer(
+            width: valor2,
+            height: 20,
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(5),
+              color: Cores.corSecundaria,
+            ),
+          ),
+        ],
       ),
     );
   }
